@@ -1,5 +1,60 @@
+require 'pry'
 # begin to build a simple program that models Instagram
 # you should have a User class, a Photo class and a comment class
+
+class User 
+  attr_reader :name
+  @@all = []
+
+  def initialize(name)
+    @name = name
+
+    @@all << self
+  end
+
+  def self.all
+    @@all
+  end
+
+  def photos
+    Photo.all.select {|photo| photo.user.name == self.name}
+  end
+
+end
+
+class Comment
+  attr_accessor :comment
+  @@all = []
+  
+  def initialize(comment)
+    @comment = comment
+    @@all << self
+  end
+
+  def self.all
+    @@all
+  end
+end
+
+class Photo # Single source of truth
+
+  attr_accessor :user, :comments
+  @@all = []
+  
+  def initialize
+
+    @@all << self
+  end
+
+  def self.all
+    @@all
+  end
+
+  def make_comment(comment)
+    Comment.new(comment)
+  end
+end
+
 
 
 sandwich_photo = Photo.new
@@ -20,3 +75,6 @@ sandwich_photo.comments
 
 Comment.all
 #=> [#<Comment:0x00007fae28043700>]
+
+
+binding.pry
